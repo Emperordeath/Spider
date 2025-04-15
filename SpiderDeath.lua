@@ -1,16 +1,15 @@
-local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+local Rayfield = loadstring(game:HttpGet("https://raw.githubusercontent.com/UltraStuff/scripts2/main/RayfieldUILibrary.lua"))()
 
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local Workspace = game:GetService("Workspace")
-local debris = game:GetService("Debris")
 
--- Função para verificar se você é a Aranha
+-- Detecta se o jogador é a Aranha
 local function IsSpider()
     return LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("SpiderScript")
 end
 
--- Função ESP da Aranha
+-- ESP da Aranha
 local function HighlightSpider()
     for _, player in pairs(Players:GetPlayers()) do
         if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("SpiderScript") then
@@ -20,12 +19,13 @@ local function HighlightSpider()
                 highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
                 highlight.FillTransparency = 0.5
                 highlight.OutlineTransparency = 0
+                highlight.Name = "Highlight"
             end
         end
     end
 end
 
--- Função Auto Collect
+-- Auto Collect Itens
 local AutoCollectEnabled = false
 local ItemList = {}
 
@@ -43,7 +43,7 @@ local function CollectItems()
     end)
 end
 
--- Função Anti Armadilha
+-- Destruir Armadilhas
 local function DisableTraps()
     for _, v in pairs(Workspace:GetDescendants()) do
         if v.Name == "Trap" and v:IsA("BasePart") then
@@ -52,22 +52,21 @@ local function DisableTraps()
     end
 end
 
--- Função Anti Spray
+-- Anti Spray (modo Aranha)
 local function AntiSpray()
     if IsSpider() then
-        local char = LocalPlayer.Character
-        local hum = char and char:FindFirstChildWhichIsA("Humanoid")
+        local hum = LocalPlayer.Character and LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
         if hum then
-            hum.Name = "HumanoidClone" -- renomeia pra burlar alguns scripts
+            hum.Name = "HumanoidClone" -- Bypass básico
         end
     end
 end
 
--- GUI
+-- Criar GUI
 local Window = Rayfield:CreateWindow({
    Name = "🕷️ Death Hub | Spider",
    LoadingTitle = "Death Hub",
-   LoadingSubtitle = "by IamEmperorDeath",
+   LoadingSubtitle = "feito por IamEmperorDeath",
    ConfigurationSaving = {
       Enabled = true,
       FolderName = "DeathHubSpider",
@@ -81,16 +80,14 @@ local Window = Rayfield:CreateWindow({
 
 local survivorTab = Window:CreateTab("✅ Survivor Mode", 4483362458)
 
--- ESP da Aranha
 survivorTab:CreateButton({
    Name = "🔍 Ativar ESP da Aranha",
    Callback = HighlightSpider,
 })
 
--- Seleção de Itens
 survivorTab:CreateDropdown({
    Name = "🎒 Escolha os itens pra coletar",
-   Options = {"YellowKey", "BlueKey", "Gasoline", "Wrench", "BugSpray", "Battery"},
+   Options = {"YellowKey", "BlueKey", "RedKey", "Gasoline", "Wrench", "BugSpray", "Battery"},
    MultiSelection = true,
    Callback = function(Value)
        ItemList = Value
@@ -108,13 +105,11 @@ survivorTab:CreateToggle({
    end,
 })
 
--- Anti Armadilha
 survivorTab:CreateButton({
    Name = "🚫 Destruir Armadilhas",
    Callback = DisableTraps,
 })
 
--- Anti Spray (Spider)
 local spiderTab = Window:CreateTab("🕷️ Spider Mode", 4483362458)
 
 spiderTab:CreateButton({
@@ -122,7 +117,7 @@ spiderTab:CreateButton({
    Callback = AntiSpray,
 })
 
--- Autodetectar modo e ativar funções automáticas
+-- Auto detecta modo e executa funções automáticas
 task.spawn(function()
     while true do
         if IsSpider() then
