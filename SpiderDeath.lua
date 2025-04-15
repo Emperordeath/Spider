@@ -1,3 +1,6 @@
+repeat task.wait() until game:IsLoaded()
+repeat task.wait() until game.Players.LocalPlayer and game.Players.LocalPlayer.Character
+
 local Rayfield = loadstring(game:HttpGet("https://raw.githubusercontent.com/UltraStuff/scripts2/main/RayfieldUILibrary.lua"))()
 
 local Players = game:GetService("Players")
