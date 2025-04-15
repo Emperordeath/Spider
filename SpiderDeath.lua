@@ -1,27 +1,27 @@
+-- Garantir que o jogo esteja carregado
 repeat task.wait() until game:IsLoaded()
 repeat task.wait() until game.Players.LocalPlayer and game.Players.LocalPlayer.Character
 
--- Carregar Rayfield
+-- Forçar carregamento do Rayfield
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
+-- Criando a janela principal do Death Hub
 local Window = Rayfield:CreateWindow({
-    Name = "🕷️ Death Hub | Spider",
-    LoadingTitle = "Death Hub",
-    LoadingSubtitle = "feito por IamEmperorDeath",
-    ConfigurationSaving = {
-        Enabled = true,
-        FolderName = "DeathHubSpider",
-        FileName = "Config"
-    },
-    Discord = {
-        Enabled = false
-    },
-    KeySystem = false,
+   Name = "🕷️ Death Hub | Spider",
+   LoadingTitle = "Death Hub",
+   LoadingSubtitle = "feito por IamEmperorDeath",
+   ConfigurationSaving = {
+      Enabled = true,
+      FolderName = "DeathHubSpider",
+      FileName = "Config"
+   },
+   Discord = {
+      Enabled = false
+   },
+   KeySystem = false,
 })
 
--- Criação das Abas e Funções do Death Hub
-
--- Aba "Survivor Mode"
+-- Criando as abas e funções principais para o Survivor Mode
 local TabSurvivor = Window:CreateTab("Survivor Mode", 4483362458)
 
 -- ESP da Aranha
@@ -30,9 +30,10 @@ TabSurvivor:CreateToggle({
     Name = "Ativar ESP da Aranha",
     Default = false,
     Callback = function(value)
-        -- Adicionar lógica para ESP da Aranha
         if value then
-            -- Função de ESP para mostrar a aranha (nome, distância, highlight)
+            -- Código para ativar o ESP da Aranha (nome, distância e highlight)
+        else
+            -- Desativar o ESP
         end
     end
 })
@@ -43,9 +44,8 @@ TabSurvivor:CreateToggle({
     Name = "Coletar Itens Automaticamente",
     Default = false,
     Callback = function(value)
-        -- Função para pegar itens como chave, gasolina, spray, etc.
         if value then
-            -- Lógica para pegar itens automaticamente
+            -- Código para pegar itens como chave, gasolina, spray automaticamente
         end
     end
 })
@@ -56,9 +56,8 @@ TabSurvivor:CreateToggle({
     Name = "Ignorar Armadilhas",
     Default = false,
     Callback = function(value)
-        -- Lógica para ignorar armadilhas ou destravar armadilhas
         if value then
-            -- Lógica para anti-armadilha
+            -- Ignorar armadilhas ou destravar armadilhas
         end
     end
 })
@@ -69,34 +68,37 @@ TabSurvivor:CreateToggle({
     Name = "Ativar Anti-Spray",
     Default = false,
     Callback = function(value)
-        -- Lógica para imunidade ou delay falso no spray
         if value then
-            -- Lógica para anti-spray
+            -- Colocar imunidade ou delay falso no spray
         end
     end
 })
 
 -- Detecção Automática se você é a Aranha ou não
 TabSurvivor:CreateSection("Modo Automático")
-TabSurvivor:CreateLabel("Detecção Automática")
 TabSurvivor:CreateButton({
     Name = "Detectar se sou a Aranha",
     Callback = function()
-        -- Função para autodetectar se o jogador é a aranha ou não
+        -- Função para autodetectar se você é a aranha ou não
+        local isSpider = game.Players.LocalPlayer.Team.Name == "Spider" -- Exemplo de detecção
+        print(isSpider and "Você é a Aranha!" or "Você não é a Aranha.")
     end
 })
 
--- Função de Detecção de Aranha
+-- Funções Extras de Detecção e Anti-Spray
 local function IsSpider()
-    -- Lógica para detectar se o jogador é a aranha
+    -- Verificar se é a aranha
+    return game.Players.LocalPlayer.Team.Name == "Spider"
 end
 
--- Função de Destruição de Armadilha e Imunidade ao Spray
 local function AntiTrapAndAntiSpray()
-    -- Lógica para aplicar AntiTrap e AntiSpray
+    -- Lógica para Anti-Arm Trap e Anti-Spray
+    if IsSpider() then
+        -- Se você for a aranha, não permitir armadilhas ou spray
+        print("Você é a Aranha! Imunidade ativa.")
+    end
 end
 
--- Rodar as funções
-IsSpider()
+-- Rodando as funções extras automaticamente
 AntiTrapAndAntiSpray()
 
